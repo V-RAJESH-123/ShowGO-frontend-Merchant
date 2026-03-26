@@ -94,6 +94,11 @@ export default function AuthScreen() {
                 if (!response.ok) {
                     throw new Error(data.detail || 'Login failed');
                 }
+                
+                if (data.user_role !== 'MERCHANT') {
+                    throw new Error("You are a user, can't be merchant");
+                }
+                
                 await saveSession(data);
 
             } else {
@@ -162,6 +167,10 @@ export default function AuthScreen() {
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.detail || 'Verification failed');
+
+            if (data.user_role !== 'MERCHANT') {
+                throw new Error("You are a user, can't be merchant");
+            }
 
             await SecureStore.setItemAsync('token', data.access_token);
             await SecureStore.setItemAsync('user_role', 'MERCHANT');

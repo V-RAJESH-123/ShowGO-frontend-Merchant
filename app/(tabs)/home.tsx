@@ -14,6 +14,21 @@ const { width } = Dimensions.get('window');
 export default function HomeScreen() {
     const { stats, loading, error, refetch } = useDashboardStats();
 
+    if (error) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <Header />
+                <ScrollView 
+                    contentContainerStyle={[styles.content, styles.errorContainer]}
+                    refreshControl={<RefreshControl refreshing={loading} onRefresh={refetch} tintColor="#8A2BE2" />}
+                >
+                    <Text style={styles.errorTitle}>Access Restricted</Text>
+                    <Text style={styles.errorText}>{error}</Text>
+                </ScrollView>
+            </SafeAreaView>
+        );
+    }
+
     const displayStats = stats || {
         revenue_today: 0,
         tickets_sold_today: 0,
@@ -46,4 +61,23 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#0B0B15' },
     content: { padding: width * 0.05 },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: Dimensions.get('window').height * 0.6,
+    },
+    errorTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#ff4444',
+        marginBottom: 12,
+        textAlign: 'center',
+    },
+    errorText: {
+        fontSize: 16,
+        color: '#A0A0A0',
+        textAlign: 'center',
+        lineHeight: 24,
+    },
 });

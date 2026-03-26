@@ -15,9 +15,9 @@ export const useDashboardStats = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchStats = useCallback(async () => {
+    const fetchStats = useCallback(async (showLoader = true) => {
         try {
-            setLoading(true);
+            if (showLoader) setLoading(true);
             const token = await SecureStore.getItemAsync('token');
             if (!token) throw new Error("No auth token");
 
@@ -36,15 +36,19 @@ export const useDashboardStats = () => {
             setStats(data);
             setError(null);
         } catch (err: any) {
-            console.error("Dashboard Stats Error:", err);
+            console.log("Dashboard Stats Error:", err);
             setError(err.message);
         } finally {
-            setLoading(false);
+            if (showLoader) setLoading(false);
         }
     }, []);
 
     useEffect(() => {
-        fetchStats();
+        fetchStats(true);
+        const intervalId = setInterval(() => {
+            fetchStats(false);
+        }, 10000);
+        return () => clearInterval(intervalId);
     }, [fetchStats]);
 
     return { stats, loading, error, refetch: fetchStats };
