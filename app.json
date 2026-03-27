@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ShowGo Merchant",
+    "name": "Merchant",
     "slug": "merchant",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -68,7 +68,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "06511d45-029f-45c3-8609-73755dba98f59"
+        "projectId": "06511d45-029f-45c3-8609-73755dba98f5"
       }
     },
     "owner": "rajeshvanapalli"
